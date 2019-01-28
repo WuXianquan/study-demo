@@ -11,7 +11,8 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/1/28 17:33
  * @Description: Redis工具类
  */
-@Component()
+
+@Component
 public class RedisUtil {
 
     @Autowired

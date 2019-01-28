@@ -1,6 +1,9 @@
 package com.study.demo.controller;
 
+import com.study.demo.service.MainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,8 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MainController {
 
+    @Autowired
+    private MainService mainService;
+
     @RequestMapping("/hello")
     public String index() {
         return "Hello World";
+    }
+
+    @RequestMapping("/setRedis")
+    public Boolean setRedis(@RequestParam("key") String key, @RequestParam("value") Object value) {
+        mainService.setRedis(key, value);
+        return mainService.isExitRedisKey(key);
+    }
+
+    @RequestMapping("/getRedis")
+    public Object getRedis(@RequestParam("key") String key) {
+        return mainService.getRedis(key);
     }
 }
