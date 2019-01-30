@@ -1,4 +1,4 @@
-package com.study.demo.Config;
+package com.study.demo.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -20,7 +20,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @Description: Redis配置类
  */
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:redis.properties")
 public class RedisConfig {
 
     @Value("${spring.redis.host}")

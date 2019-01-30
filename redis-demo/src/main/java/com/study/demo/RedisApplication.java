@@ -8,15 +8,15 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @EnableCaching
 @SpringBootApplication
-public class RunApplication extends SpringBootServletInitializer {
+public class RedisApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(RunApplication.class, args);
+        SpringApplication.run(RedisApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(RunApplication.class);
+        return application.sources(RedisApplication.class);
     }
 
 }

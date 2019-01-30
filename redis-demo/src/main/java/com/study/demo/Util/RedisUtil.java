@@ -1,4 +1,4 @@
-package com.study.demo.Util;
+package com.study.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,9 +1,11 @@
 package com.study.demo.service.impl;
 
-import com.study.demo.Util.RedisUtil;
+import com.study.demo.util.RedisUtil;
 import com.study.demo.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MainServiceImpl implements MainService {
 
     @Autowired

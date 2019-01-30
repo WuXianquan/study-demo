@@ -1,6 +1,6 @@
 package com.study.demo;
 
-import com.study.demo.Util.RedisUtil;
+import com.study.demo.util.RedisUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
