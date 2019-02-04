@@ -17,7 +17,7 @@ import java.sql.SQLException;
 /**
  * @Auther: Lon
  * @Date: 2019/1/30 15:42
- * @Description:
+ * @Description: DruidDB 数据监控配置类
  */
 @Slf4j
 @Configuration
@@ -117,7 +117,7 @@ public class DruidDBConfig {
         return filterRegistrationBean;
     }
 
-    @Bean
+    @Bean(name="druidDataSource")
     public DataSource dataSource() {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setUrl(dbUrl);
