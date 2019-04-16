@@ -1,7 +1,8 @@
 package com.study.demo.service;
 
+import com.study.demo.bean.*;
+
 import java.util.List;
-import java.util.Map;
 
 public interface MainService {
 
@@ -11,5 +12,5 @@ public interface MainService {
 
     Object getRedis(String key);
 
-    List<Map<String, Object>> getUserList();
+    List<User> getUserList();
 }

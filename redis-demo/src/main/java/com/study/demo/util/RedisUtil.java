@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @Auther: Lon
+ * @Author: Lon
  * @Date: 2019/1/28 17:33
  * @Description: Redis工具类
  */

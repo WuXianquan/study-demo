@@ -1,5 +1,6 @@
 package com.study.demo.service.impl;
 
+import com.study.demo.bean.User;
 import com.study.demo.mapper.MainMapper;
 import com.study.demo.util.RedisUtil;
 import com.study.demo.service.MainService;
@@ -7,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MainServiceImpl implements MainService {
@@ -34,7 +34,7 @@ public class MainServiceImpl implements MainService {
     }
 
     @Override
-    public List<Map<String, Object>> getUserList() {
+    public List<User> getUserList() {
         return mainMapper.getUserList();
     }
 }

@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 
 /**
- * @Auther: Lon
+ * @Author: Lon
  * @Date: 2019/1/30 14:15
  * @Description: 整合mybatis配置类，定义SqlSessionFactoryBean
  */

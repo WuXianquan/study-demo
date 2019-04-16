@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- * @Auther: Lon
+ * @Author: Lon
  * @Date: 2019/1/30 15:42
  * @Description: DruidDB 数据监控配置类
  */
