@@ -24,6 +24,21 @@
             <artifactId>druid-demo</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.study.demo</groupId>
+            <artifactId>common-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.study.demo</groupId>
+            <artifactId>interface-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.study.demo</groupId>
+            <artifactId>shiro-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,14 +1,17 @@
 package com.study.demo.controller;
 
-import com.study.demo.bean.User;
+import com.alibaba.fastjson.JSONObject;
 import com.study.demo.service.MainService;
+import com.study.demo.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Lon
@@ -38,8 +41,17 @@ public class MainController {
         return mainService.getRedis(key);
     }
 
-    @RequestMapping("/getUserList")
-    public List<User> getUserList() {
-        return mainService.getUserList();
+    @RequestMapping("/httpPostTest")
+    public Object httpPostTest() {
+        Map param = new HashMap();
+        param.put("a", 1);
+        param.put("b", "test");
+        JSONObject jsonObject = HttpUtil.synchroPost("http://localhost:8080/postReturnTest", param);
+        return jsonObject;
+    }
+
+    @RequestMapping("/postReturnTest")
+    public Object postReturnTest(Map param) {
+        return param;
     }
 }

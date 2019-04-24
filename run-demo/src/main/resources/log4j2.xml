@@ -13,18 +13,18 @@
         <!--这个输出控制台的配置 -->
         <Console name="console" target="SYSTEM_OUT">
             <!--输出日志的格式 -->
-            <PatternLayout charset="UTF-8" pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
+            <PatternLayout charset="UTF-8"
+                           pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
         </Console>
         <!-- info及以上级别的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档
         <RollingRandomAccessFile> filepattern 中的日期格式精确位数决定了生成日志的日期单位，
             如果按月生成日志，那么 filePath 修改为 "${LOG_HOME}/app-%d{yyyy-MM}.log";
             按小时生成日志，filePath = "${LOG_HOME}/app-%d{yyyy-MM-dd-HH-mm}.log"; -->
-        <RollingRandomAccessFile name="infoLog"
-                                 fileName="${log.dir}/${instance}-info.log"
+        <RollingRandomAccessFile name="infoLog" fileName="${log.dir}/${instance}-info.log"
                                  filePattern="${log.dir}/%d{yyyy-MM}/${instance}-info-%d{yyyy-MM-dd}-%i.log.gz"
                                  append="true">
-            <!-- filePattern="${log.dir}/%d{yyyy-MM}/${instance}-info-%d{yyyy-MM-dd}-%i.log.gz" -->
-            <PatternLayout charset="UTF-8" pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
+            <PatternLayout charset="UTF-8"
+                           pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
             <Filters>
                 <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
@@ -64,7 +64,8 @@
                 <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
                 <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-            <PatternLayout charset="UTF-8" pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
+            <PatternLayout charset="UTF-8"
+                           pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="1MB"/>
@@ -79,7 +80,23 @@
             <Filters>
                 <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
-            <PatternLayout charset="UTF-8" pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
+            <PatternLayout charset="UTF-8"
+                           pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="1MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <!-- druid的日志记录追加器 -->
+        <RollingRandomAccessFile name="druidLog" fileName="${log.dir}/${instance}-druid.log"
+                                 filePattern="${log.dir}/%d{yyyy-MM}/${instance}-druid-%d{yyyy-MM-dd}-%i.log.gz"
+                                 append="true">
+            <Filters>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout charset="UTF-8"
+                           pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}][%thread][%level][%class][%line]:%message%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
                 <SizeBasedTriggeringPolicy size="1MB"/>
@@ -96,15 +113,35 @@
             <AppenderRef ref="errorLog"/>
         </logger>
 
-        <logger name="java.sql.PreparedStatement" level="debug" additivity="true">
-            <AppenderRef ref="console"/>
+        <!--<logger name="java.sql.PreparedStatement" level="debug" additivity="true">-->
+            <!--<AppenderRef ref="console"/>-->
+        <!--</logger>-->
+
+        <!--记录druid-sql的记录-->
+        <logger name="druid.sql.Statement" level="debug" additivity="false">
+            <appender-ref ref="druidLog"/>
+            <appender-ref ref="console"/>
         </logger>
+
+        <!--log4j2 自带过滤日志-->
+        <logger name="org.apache.catalina.startup.DigesterFactory" level="error"/>
+        <logger name="org.apache.catalina.util.LifecycleBase" level="error"/>
+        <logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn"/>
+        <logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+        <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn"/>
+        <logger name="org.crsh.plugin" level="warn"/>
+        <logger name="org.crsh.ssh" level="warn"/>
+        <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error"/>
+        <logger name="org.hibernate.validator.internal.util.Version" level="warn"/>
+        <logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="warn"/>
+        <logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>
+        <logger name="org.thymeleaf" level="warn"/>
 
         <!-- 特定包采用异步日志，异步不起效，暂时不处理-->
         <!--<AsyncLogger name="com.study.demo.controller" level="info" includeLocation="true" additivity="false">-->
-            <!--<appender-ref ref="console" />-->
-            <!--<AppenderRef ref="infoLog"/>-->
-            <!--<appender-ref ref="errorLog" />-->
+        <!--<appender-ref ref="console" />-->
+        <!--<AppenderRef ref="infoLog"/>-->
+        <!--<appender-ref ref="errorLog" />-->
         <!--</AsyncLogger>-->
 
         <!-- root logger 配置 -->
@@ -115,10 +152,10 @@
         </Root>
 
         <!-- AsyncRoot - 异步记录日志 - 需要LMAX Disruptor的支持，异步不起效，暂时不处理 -->
-         <!--<AsyncRoot level="info" includeLocation="true" additivity="false">-->
-             <!--<AppenderRef ref="console"/>-->
-             <!--<AppenderRef ref="infoLog" />-->
-             <!--<AppenderRef ref="errorLog" />-->
-         <!--</AsyncRoot>-->
+        <!--<AsyncRoot level="info" includeLocation="true" additivity="false">-->
+        <!--<AppenderRef ref="console"/>-->
+        <!--<AppenderRef ref="infoLog" />-->
+        <!--<AppenderRef ref="errorLog" />-->
+        <!--</AsyncRoot>-->
     </Loggers>
 </Configuration>
