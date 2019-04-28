@@ -1,72 +1,52 @@
 package com.study.demo.controller;
 
 import com.study.demo.bean.User;
+import com.study.demo.enums.UserErrorEnum;
 import com.study.demo.result.ResponseBean;
+import com.study.demo.service.LoginService;
 import com.study.demo.service.UserService;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.subject.Subject;
+import com.study.demo.util.ResponseUtil;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author: Lon
  * @Date: 2019/4/23 16:46
  * @Description:
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private LoginService loginService;
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/unauth")
-    @ResponseBody
     public ResponseBean unauth() {
-        Map<String, Object> map = new HashMap<>();
-        return new ResponseBean(9998, "未登录");
+        return loginService.unauth();
     }
 
     @PostMapping("/auth/login")
-    @ResponseBody
     public ResponseBean login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        ResponseBean responseBean = new ResponseBean(0000, "登录成功");
+        return loginService.login(username, password);
+    }
 
-        //创建subject实例
-        Subject subject = SecurityUtils.getSubject();
-        //判断当前的subject是否登录
-        if (subject.isAuthenticated() == false) {
-            //将用户名和密码存入UsernamePasswordToken中
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            try {
-                //将存有用户名和密码的token存进subject中
-                subject.login(token);
-            } catch (UnknownAccountException uae) {
-                responseBean.setCode(0001);
-                responseBean.setMsg("用户不存在");
-            } catch (IncorrectCredentialsException ice) {
-                responseBean.setCode(0002);
-                responseBean.setMsg("密码错误");
-            } catch (LockedAccountException lae) {
-                responseBean.setCode(0003);
-                responseBean.setMsg("用户已冻结");
-            } catch (AuthenticationException e) {
-                responseBean.setCode(9999);
-                responseBean.setMsg("系统开小差");
-            }
-        }
-        return responseBean;
+    @PostMapping("/logout")
+    public ResponseBean logout(@RequestParam("username") String username, @RequestParam("password") String password) {
+        return loginService.logout(username, password);
     }
 
     @GetMapping("/info")
-    @ResponseBody
+    @RequiresAuthentication
     public ResponseBean info(@RequestParam("id") String id) {
         User user = userService.findUserById(id);
-        return new ResponseBean(0001, "成功", user);
+        if (user == null) {
+            return  ResponseUtil.failResponse(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
+        }
+        return ResponseUtil.successResponse(user);
     }
 }

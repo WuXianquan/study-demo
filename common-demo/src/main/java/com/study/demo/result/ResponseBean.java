@@ -11,7 +11,7 @@ import lombok.Data;
 public class ResponseBean {
 
     // 状态码
-    private int code;
+    private String code;
 
     // 返回信息
     private String msg;
@@ -19,13 +19,16 @@ public class ResponseBean {
     // 返回的数据
     private Object data;
 
-    public ResponseBean(int code, String msg) {
+    public ResponseBean() {
+    }
+
+    public ResponseBean(String code, String msg) {
         this.code = code;
         this.msg = msg;
         this.data = null;
     }
 
-    public ResponseBean(int code, String msg, Object data) {
+    public ResponseBean(String code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;

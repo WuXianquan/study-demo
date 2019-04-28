@@ -113,10 +113,6 @@
             <AppenderRef ref="errorLog"/>
         </logger>
 
-        <!--<logger name="java.sql.PreparedStatement" level="debug" additivity="true">-->
-            <!--<AppenderRef ref="console"/>-->
-        <!--</logger>-->
-
         <!--记录druid-sql的记录-->
         <logger name="druid.sql.Statement" level="debug" additivity="false">
             <appender-ref ref="druidLog"/>

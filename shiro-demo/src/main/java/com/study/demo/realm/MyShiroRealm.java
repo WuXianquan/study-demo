@@ -2,10 +2,8 @@ package  com.study.demo.realm;
 
 import com.study.demo.bean.User;
 import com.study.demo.service.UserService;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Date: 2019/4/23 16:03
  * @Description:
  */
+@Slf4j
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
@@ -43,7 +42,13 @@ public class MyShiroRealm extends AuthorizingRealm {
         //检查token的信息
         User user = userService.findUserByUsername(username);
         if (user == null) {
-            return null;
+            log.error("shiro认证用户失败，用户不存在，{}", username);
+            throw new UnknownAccountException();
+        }
+        String password = new String((char[])token.getCredentials());
+        if (!user.getPassword().equals(password)) {
+            log.error("shiro认证用户失败，密码错误，{}:{}", username, password);
+            throw new AuthenticationException();
         }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), username);
         return info;

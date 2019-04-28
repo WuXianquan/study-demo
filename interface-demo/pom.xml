@@ -11,5 +11,11 @@
 
     <artifactId>interface-demo</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.study.demo</groupId>
+            <artifactId>common-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 </project>
