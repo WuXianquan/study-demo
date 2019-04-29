@@ -62,13 +62,14 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/unauth", "anon");
         filterChainDefinitionMap.put("/user/auth/login", "anon");
         filterChainDefinitionMap.put("/register", "anon");
+        filterChainDefinitionMap.put("/user/info", "authc");
         filterChainDefinitionMap.put("/logout", "logout");
         //过滤连接自定义，从上往下顺序执行，所以用LinkHashMap /**放在最下边
         filterChainDefinitionMap.put("/**", "authc");
         //设置登录界面，如果不设置为寻找web根目录下的文件
         shiroFilterFactoryBean.setLoginUrl("/user/unauth");
         //设置登录成功后要跳转的连接
-//        shiroFilterFactoryBean.setSuccessUrl("/success");
+        shiroFilterFactoryBean.setSuccessUrl("/user/index");
         //设置登录未成功，也可以说无权限界面
         shiroFilterFactoryBean.setUnauthorizedUrl("/user/403");
 

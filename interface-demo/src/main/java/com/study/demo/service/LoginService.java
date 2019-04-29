@@ -10,12 +10,6 @@ import com.study.demo.result.ResponseBean;
 public interface LoginService {
 
     /**
-     * 未登录
-     * @return
-     */
-    ResponseBean unauth();
-
-    /**
      * 登录
      * @param username 用户名
      * @param password 密码

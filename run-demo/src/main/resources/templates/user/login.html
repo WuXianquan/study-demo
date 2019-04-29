@@ -1,14 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>登录</title>
 </head>
 <body>
-<form action="/user/auth/login" method="post">
-    登录名：<input name="username"/><br/>
-    密码：<input name="password"/>
-    <input type="submit" value="登录" />
-</form>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <form class="form-horizontal" action="/user/auth/login" method="post">
+                <div class="control-group">
+                    <label class="control-label" for="inputUsername">用户名</label>
+                    <div class="controls">
+                        <input id="inputUsername" name="username" type="text" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPassword">密码</label>
+                    <div class="controls">
+                        <input id="inputPassword" name="password" type="password" />
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox"><input type="checkbox" />记住我</label> <button class="btn" type="submit">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>

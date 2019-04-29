@@ -21,14 +21,6 @@ import org.springframework.stereotype.Service;
 public class LoginServiceImpl implements LoginService {
 
     @Override
-    public ResponseBean unauth() {
-        ResponseBean responseBean = new ResponseBean();
-        responseBean.setCode(CommonConstant.UNAUTH_CODE);
-        responseBean.setMsg(CommonConstant.UNAUTH_MSG);
-        return responseBean;
-    }
-
-    @Override
     public ResponseBean login(String username, String password) {
         ResponseBean rb = ResponseUtil.successResponse(null);
 

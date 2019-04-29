@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @Author: Lon
  * @Date: 2019/4/23 16:03
- * @Description:
+ * @Description: 自定义Realm
  */
 @Slf4j
 public class MyShiroRealm extends AuthorizingRealm {
@@ -34,10 +34,11 @@ public class MyShiroRealm extends AuthorizingRealm {
      * 验证当前登录的Subject
      * @param token
      * @return
+     * @throws UnknownAccountException
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws UnknownAccountException, AuthenticationException {
         String username = (String) token.getPrincipal();
         //检查token的信息
         User user = userService.findUserByUsername(username);
