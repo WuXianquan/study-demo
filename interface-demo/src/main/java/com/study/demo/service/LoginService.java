@@ -19,9 +19,7 @@ public interface LoginService {
 
     /**
      * 登出
-     * @param username
-     * @param password
      * @return
      */
-    ResponseBean logout(String username, String password);
+    ResponseBean logout();
 }

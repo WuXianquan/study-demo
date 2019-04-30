@@ -1,14 +1,14 @@
 package com.study.demo.controller;
 
 import com.study.demo.bean.User;
-import com.study.demo.enums.UserErrorEnum;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.LoginService;
-import com.study.demo.service.UserService;
-import com.study.demo.util.ResponseUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: Lon
@@ -24,23 +24,33 @@ public class LoginController {
 
     @GetMapping("/unauth")
     public String unauth() {
+        if (SecurityUtils.getSubject().isAuthenticated()) {
+            return "redirect:/user/index";
+        }
         return "/user/login";
     }
 
-    @PostMapping("/auth/login")
-    public void login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        loginService.login(username, password);
-//        return "/user/index";
+    @GetMapping("/error")
+    public String error() {
+        return "/error";
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/auth/login")
     @ResponseBody
-    public ResponseBean logout(@RequestParam("username") String username, @RequestParam("password") String password) {
-        return loginService.logout(username, password);
+    public ResponseBean login(@RequestParam("username") String username, @RequestParam("password") String password) {
+        return loginService.login(username, password);
+    }
+
+    @PostMapping("/auth/logout")
+    @ResponseBody
+    public ResponseBean logout() {
+        return loginService.logout();
     }
 
     @GetMapping("/index")
-    public String index() {
+    public String index(HttpServletRequest request) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        request.setAttribute("username", user.getUsername());
         return "/user/index";
     }
 

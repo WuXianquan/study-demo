@@ -1,6 +1,5 @@
 package com.study.demo.service.impl;
 
-import com.study.demo.constant.CommonConstant;
 import com.study.demo.enums.UserErrorEnum;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.LoginService;
@@ -30,7 +29,7 @@ public class LoginServiceImpl implements LoginService {
         if (subject.isAuthenticated() == true) {
             rb.setCode(UserErrorEnum.USER_HASLOGINED.getErrorCode());
             rb.setMsg(UserErrorEnum.USER_HASLOGINED.getErrorMsg());
-        } else{
+        } else {
             //将用户名和密码存入UsernamePasswordToken中
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             try {
@@ -51,13 +50,13 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public ResponseBean logout(String username, String password) {
+    public ResponseBean logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated() == false) {
-            ResponseUtil.failResponse("用户未登录");
+            return ResponseUtil.failResponse("用户未登录");
         } else {
             subject.logout();
+            return ResponseUtil.successResponse(null);
         }
-        return ResponseUtil.successResponse(subject.getPrincipal());
     }
 }
