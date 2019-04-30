@@ -10,20 +10,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Author: Lon
  * @Date: 2019/4/23 16:46
  * @Description:
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @GetMapping("/userList")
+    public ResponseBean userList() {
+        List<User> userList = userService.findUserList();
+        return ResponseUtil.successResponse(userList);
+    }
+
     @GetMapping("/info")
-    @ResponseBody
     public ResponseBean info(@RequestParam("id") String id) {
         User user = userService.findUserById(id);
         if (user == null) {

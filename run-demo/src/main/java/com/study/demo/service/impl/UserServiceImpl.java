@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public List<User> getUserList() {
-        return userMapper.getUserList();
+    public List<User> findUserList() {
+        return userMapper.findUserList();
     }
 
     @Override
@@ -32,5 +32,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         return userMapper.findUserByUsername(username);
+    }
+
+    @Override
+    public Integer createUser(User user) {
+        return userMapper.createUser(user);
+    }
+
+    @Override
+    public Integer updateUser(User user) {
+        return userMapper.updateUser(user);
+    }
+
+    @Override
+    public Integer deleteUser(String id) {
+        return userMapper.deleteUser(id);
     }
 }

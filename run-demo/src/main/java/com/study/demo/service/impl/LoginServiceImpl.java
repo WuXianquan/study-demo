@@ -1,5 +1,6 @@
 package com.study.demo.service.impl;
 
+import com.study.demo.constant.CommonConstant;
 import com.study.demo.enums.UserErrorEnum;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.LoginService;
@@ -53,7 +54,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseBean logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated() == false) {
-            return ResponseUtil.failResponse("用户未登录");
+            return ResponseUtil.failResponse(CommonConstant.UNAUTH_CODE, CommonConstant.UNAUTH_MSG);
         } else {
             subject.logout();
             return ResponseUtil.successResponse(null);
