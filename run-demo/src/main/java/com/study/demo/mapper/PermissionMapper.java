@@ -3,6 +3,7 @@ package com.study.demo.mapper;
 import com.study.demo.bean.Permission;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Lon
@@ -23,6 +24,13 @@ public interface PermissionMapper {
      * @return
      */
     Permission findPermissionById(String id);
+
+    /**
+     * 根据角色id获取权限信息
+     * @param roleId
+     * @return
+     */
+    Set<Permission> findPermissionByRoleId(String roleId);
 
     /**
      * 添加权限

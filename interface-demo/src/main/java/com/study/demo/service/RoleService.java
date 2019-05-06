@@ -25,6 +25,13 @@ public interface RoleService {
     Role findRoleById(String id);
 
     /**
+     * 根据用户名获取角色列表信息
+     * @param username
+     * @return
+     */
+    List<Role> findRoleListByUsername(String username);
+
+    /**
      * 添加角色
      * @param role
      * @return

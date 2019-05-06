@@ -2,6 +2,7 @@ package com.study.demo.service.impl;
 
 import com.study.demo.bean.Permission;
 import com.study.demo.service.PermissionService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @Date: 2019/4/30 17:45
  * @Description: 权限实现类
  */
+@Service
 public class PermissionServiceImpl implements PermissionService {
 
     @Override

@@ -2,6 +2,7 @@ package com.study.demo.config;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -30,6 +31,12 @@ public class MybatisConfig {
     private DataSource dataSource;
 
     @Bean
+    @ConfigurationProperties(prefix = "mybatis.configuration")
+    public org.apache.ibatis.session.Configuration configuration() {
+        return new org.apache.ibatis.session.Configuration();
+    }
+
+    @Bean
     public SqlSessionFactoryBean createSqlSessionFactory() throws IOException {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -41,6 +48,7 @@ public class MybatisConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         // 设置mapper 接口所在的包
         sqlSessionFactoryBean.setTypeAliasesPackage(mapperPackagePath);
+        sqlSessionFactoryBean.setConfiguration(configuration());
         return sqlSessionFactoryBean;
     }
 }

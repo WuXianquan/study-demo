@@ -1,8 +1,11 @@
 package com.study.demo.service;
 
+import com.study.demo.bean.Permission;
+import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Lon
@@ -51,4 +54,22 @@ public interface UserService {
      * @return
      */
     Integer deleteUser(String id);
+
+    /**
+     * 根据用户名获取用户角色
+     * @param username
+     */
+    List<Role> findUserRoleByUsername(String username);
+
+    /**
+     * 根据用户名获取用户权限
+     * @param username
+     */
+    Set<Permission> findUserPermissionByUsername(String username);
+
+    /**
+     * 根据用户名获取用户权限
+     * @param username
+     */
+    Set<String> findUserStringPermissionByUsername(String username);
 }

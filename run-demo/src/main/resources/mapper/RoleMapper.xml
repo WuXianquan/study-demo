@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.demo.mapper.RoleMapper">
+
+    <resultMap id="roleMap" type="com.study.demo.bean.Role">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="roleName" jdbcType="VARCHAR" />
+        <result column="is_del" property="isDel" jdbcType="INTEGER" />
+        <collection property="permissions" ofType="com.study.demo.bean.Permission" select="com.study.demo.mapper.PermissionMapper.selectPermission" column="id"></collection>
+    </resultMap>
+
+    <select id="findRoleList" resultMap="roleMap">
+        select * from t_role
+    </select>
+
+    <select id="findRoleById" parameterType="java.lang.String" resultMap="roleMap">
+        select * from t_role where id = #{value}
+    </select>
+
+    <select id="findRoleListByUsername" parameterType="java.lang.String" resultMap="roleMap">
+        select r.* from t_role r
+        join t_user_role ur on ur.role_id = r.id
+        join t_user u on u.id = ur.user_id
+        where u.username = #{value}
+    </select>
+
+    <insert id="createRole" parameterType="com.study.demo.bean.Role">
+        insert into t_core(id,name,create_time) values(#{id},#{roleName},now())
+    </insert>
+    
+    <update id="updateRole" parameterType="com.study.demo.bean.Role">
+        update t_core set name = #{roleName} where id = #{id}
+    </update>
+
+    <update id="deleteRole" parameterType="com.study.demo.bean.Role">
+        update t_core set is_del = #{isDel} where id = #{id}
+    </update>
+</mapper>

@@ -25,6 +25,13 @@ public interface RoleMapper {
     Role findRoleById(String id);
 
     /**
+     * 根据用户名称获取角色信息
+     * @param username
+     * @return
+     */
+    List<Role> findRoleListByUsername(String username);
+
+    /**
      * 添加角色
      * @param role
      * @return

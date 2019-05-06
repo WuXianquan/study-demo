@@ -2,15 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.demo.mapper.UserMapper">
 
-    <select id="findUserList" resultType="com.study.demo.bean.User">
-        select * from user
+    <resultMap id="userResultMap" type="com.study.demo.bean.User">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <collection property="roles" ofType="com.study.demo.bean.Role" select="selectRole" column="id"></collection>
+    </resultMap>
+
+    <select id="selectRole" parameterType="java.lang.Integer" resultMap="com.study.demo.mapper.RoleMapper.roleMap">
+		select r.*, r.name role_name from t_role r
+        join t_user_role ru on ru.role_id = r.id
+        join t_user u on u.id = ru.user_id
+        where u.id = #{value} and r.is_del = 0
+	</select>
+
+    <select id="findUserList" resultMap="userResultMap">
+         select * from t_user
     </select>
 
     <select id="findUserById" parameterType="java.lang.String" resultType="com.study.demo.bean.User">
-        select * from user where id = #{value}
+        select * from t_user where id = #{value}
     </select>
 
     <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.study.demo.bean.User">
-        select * from user where username = #{value}
+        select * from t_user where username = #{value}
     </select>
 </mapper>

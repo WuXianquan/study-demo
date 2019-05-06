@@ -2,6 +2,8 @@ package com.study.demo.bean;
 
 import lombok.Data;
 
+import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 /**
  * @Author: Lon
@@ -9,17 +11,17 @@ import java.util.List;
  * @Description: 用户实体类
  */
 @Data
-public class User {
+public class User implements Serializable {
 
-    private String id;
+    private BigInteger id;
 
     private String username;
 
     private String password;
 
-    private Data createTime;
+    private String createTime;
 
-    private Data updateTime;
+    private String updateTime;
 
     private List<Role> roles;
 }
