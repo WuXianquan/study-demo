@@ -5,7 +5,6 @@ import com.study.demo.mapper.RoleMapper;
 import com.study.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -21,32 +20,31 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<Role> findRoleList() {
-        return null;
+        return roleMapper.findRoleList();
     }
 
     @Override
     public Role findRoleById(String id) {
-        return null;
+        return roleMapper.findRoleById(id);
     }
 
     @Override
     public List<Role> findRoleListByUsername(String username) {
-        List<Role> roleList = roleMapper.findRoleListByUsername(username);
-        return roleList;
+        return roleMapper.findRoleListByUsername(username);
     }
 
     @Override
     public Integer createRole(Role role) {
-        return null;
+        return roleMapper.createRole(role);
     }
 
     @Override
     public Integer updateRole(Role role) {
-        return null;
+        return roleMapper.updateRole(role);
     }
 
     @Override
     public Integer deleteRole(String id) {
-        return null;
+        return roleMapper.deleteRole(id);
     }
 }

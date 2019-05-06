@@ -1,5 +1,7 @@
 package com.study.demo.realm;
 
+import com.study.demo.bean.Permission;
+import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
 import com.study.demo.service.PermissionService;
 import com.study.demo.service.UserService;
@@ -10,6 +12,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: Lon
@@ -27,6 +33,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     /**
      * 用于获取登录成功后的角色、权限等信息
+     *
      * @param principalCollection
      * @return
      */
@@ -36,12 +43,29 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (user != null) {
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
             // TODO
+
+            List<Role> roleList = userService.findUserRoleByUsername(user.getUsername());
+            Set<String> roleStringSet = new HashSet<String>();
+            for (Role role : roleList) {
+                roleStringSet.add(role.getRoleName());
+            }
+            info.setRoles(roleStringSet);
+
+
+            Set<String> permissionUrlSet = userService.findUserStringPermissionByUsername(user.getUsername());
+            info.setStringPermissions(permissionUrlSet);
+
+            //Set<Permission> permissionSet = userService.findUserPermissionByUsername(user.getUsername());
+            //info.setObjectPermissions(permissionSet);
+            // TODO 了解权限访问限制的流程和使用规范
+            return info;
         }
         return null;
     }
 
     /**
      * 验证当前登录的Subject
+     *
      * @param token
      * @return
      * @throws UnknownAccountException

@@ -3,7 +3,6 @@ package com.study.demo.mapper;
 import com.study.demo.bean.Permission;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author: Lon
@@ -30,7 +29,7 @@ public interface PermissionMapper {
      * @param roleId
      * @return
      */
-    Set<Permission> findPermissionByRoleId(String roleId);
+    List<Permission> findPermissionByRoleId(String roleId);
 
     /**
      * 添加权限

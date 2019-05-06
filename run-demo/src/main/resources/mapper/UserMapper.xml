@@ -8,25 +8,30 @@
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <collection property="roles" ofType="com.study.demo.bean.Role" select="selectRole" column="id"></collection>
+        <collection property="roles" ofType="com.study.demo.bean.Role" select="com.study.demo.mapper.RoleMapper.findRoleByUserId" column="id"></collection>
     </resultMap>
-
-    <select id="selectRole" parameterType="java.lang.Integer" resultMap="com.study.demo.mapper.RoleMapper.roleMap">
-		select r.*, r.name role_name from t_role r
-        join t_user_role ru on ru.role_id = r.id
-        join t_user u on u.id = ru.user_id
-        where u.id = #{value} and r.is_del = 0
-	</select>
 
     <select id="findUserList" resultMap="userResultMap">
          select * from t_user
     </select>
 
-    <select id="findUserById" parameterType="java.lang.String" resultType="com.study.demo.bean.User">
+    <select id="findUserById" parameterType="java.lang.Long" resultMap="userResultMap">
         select * from t_user where id = #{value}
     </select>
 
-    <select id="findUserByUsername" parameterType="java.lang.String" resultType="com.study.demo.bean.User">
+    <select id="findUserByUsername" parameterType="java.lang.String" resultMap="userResultMap">
         select * from t_user where username = #{value}
     </select>
+
+    <insert id="createUser" parameterType="com.study.demo.bean.User">
+        insert into t_user (username,password,create_time) values (#{username}, #{password}, now());
+    </insert>
+
+    <update id="updateUser" parameterType="com.study.demo.bean.User">
+        update t_user set username = #{username} where id = #{id}
+    </update>
+
+    <update id="deleteUser" parameterType="java.lang.Long">
+        update t_user set is_del = -1 where id = #{id}
+    </update>
 </mapper>

@@ -4,18 +4,34 @@
 
     <resultMap id="permissionMap" type="com.study.demo.bean.Permission">
         <id column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="name" property="name" jdbcType="VARCHAR" />
-        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="selectPermission" parameterType="java.lang.String" resultMap="permissionMap">
+    <select id="findPermissionByRoleId" parameterType="java.lang.String" resultMap="permissionMap">
         select p.* from t_permission p
         join t_role_permission rp on rp.permission_id = p.id
         join t_role r on r.id = rp.role_id
         where r.id = #{value}
 	</select>
 
-    <select id="findPermissionByRoleId" resultType="com.study.demo.bean.Permission">
-
+    <select id="findPermissionList" resultMap="permissionMap">
+         select * from t_permission
     </select>
+
+    <select id="findPermissionById" parameterType="java.lang.String" resultMap="permissionMap">
+        select * from t_permission where id = #{value}
+    </select>
+
+    <insert id="createPermission" parameterType="com.study.demo.bean.Permission">
+        insert into t_permission(id,name,url) values (#{id}, #{name}, #{url})
+    </insert>
+
+    <update id="updatePermission" parameterType="com.study.demo.bean.Permission">
+        update t_permission set name = #{name}, url = #{url} where id = #{id}
+    </update>
+
+    <delete id="deletePermission" parameterType="java.lang.String">
+        delete from t_permission where id = #{value}
+    </delete>
 </mapper>

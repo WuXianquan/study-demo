@@ -25,6 +25,13 @@ public interface PermissionService {
     Permission findPermissionById(String id);
 
     /**
+     * 根据角色获取权限信息
+     * @param roleId
+     * @return
+     */
+    List<Permission> findPermissionByRoleId(String roleId);
+
+    /**
      * 添加权限
      * @param Permission
      * @return

@@ -71,7 +71,8 @@ public class ShiroConfig {
         //设置登录成功后要跳转的连接
         shiroFilterFactoryBean.setSuccessUrl("/user/index");
         //设置登录未成功，也可以说无权限界面
-        shiroFilterFactoryBean.setUnauthorizedUrl("/user/403");
+        // TODO BUG: 设置无权访问页面跳转不起作用
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/noAuth");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

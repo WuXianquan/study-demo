@@ -3,7 +3,6 @@ package com.study.demo.bean;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 /**
  * @Author: Lon
@@ -13,7 +12,7 @@ import java.util.List;
 @Data
 public class User implements Serializable {
 
-    private BigInteger id;
+    private Long id;
 
     private String username;
 

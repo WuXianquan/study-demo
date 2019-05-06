@@ -24,6 +24,43 @@ public class RoleMapperTest {
     @Test
     public void findRoleList() {
         List<Role> roleList =  roleMapper.findRoleList();
-        Assert.assertNotNull(roleList);
+        Assert.assertNotSame(0, roleList);
+    }
+
+    @Test
+    public void findRoleById() {
+        Role role = roleMapper.findRoleById("111");
+        Assert.assertNotNull(role);
+    }
+
+    @Test
+    public void findRoleListByUsername() {
+        List<Role> roleList = roleMapper.findRoleListByUsername("x");
+        Assert.assertNotSame(0, roleList);
+    }
+
+    @Test
+    public void createRole() {
+        Role role = new Role();
+        role.setId("999");
+        role.setIsDel(0);
+        role.setRoleName("测试角色");
+        Integer ret = roleMapper.createRole(role);
+        Assert.assertEquals(ret, Integer.valueOf(1));
+    }
+
+    @Test
+    public void updateRole() {
+        Role role = new Role();
+        role.setId("999");
+        role.setRoleName("测试");
+        Integer ret = roleMapper.updateRole(role);
+        Assert.assertEquals(ret, Integer.valueOf(1));
+    }
+
+    @Test
+    public void deleteRole() {
+        Integer ret = roleMapper.deleteRole("999");
+        Assert.assertEquals(ret, Integer.valueOf(1));
     }
 }
