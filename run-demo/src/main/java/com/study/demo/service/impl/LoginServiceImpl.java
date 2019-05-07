@@ -2,6 +2,7 @@ package com.study.demo.service.impl;
 
 import com.study.demo.constant.CommonConstant;
 import com.study.demo.enums.UserErrorEnum;
+import com.study.demo.exception.ServiceException;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.LoginService;
 import com.study.demo.util.ResponseUtil;
@@ -28,8 +29,7 @@ public class LoginServiceImpl implements LoginService {
         Subject subject = SecurityUtils.getSubject();
         //判断当前的subject是否登录
         if (subject.isAuthenticated() == true) {
-            rb.setCode(UserErrorEnum.USER_HASLOGINED.getErrorCode());
-            rb.setMsg(UserErrorEnum.USER_HASLOGINED.getErrorMsg());
+            throw new ServiceException(UserErrorEnum.USER_HASLOGINED.getErrorCode(), UserErrorEnum.USER_HASLOGINED.getErrorMsg());
         } else {
             //将用户名和密码存入UsernamePasswordToken中
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
@@ -37,14 +37,12 @@ public class LoginServiceImpl implements LoginService {
                 //将存有用户名和密码的token存进subject中
                 subject.login(token);
             } catch (UnknownAccountException uae) {
-                rb.setCode(UserErrorEnum.USER_NOTEXITS.getErrorCode());
-                rb.setMsg(UserErrorEnum.USER_NOTEXITS.getErrorMsg());
+                throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
             } catch (AuthenticationException ae) {
-                rb.setCode(UserErrorEnum.USER_FALSEPASSWORD.getErrorCode());
-                rb.setMsg(UserErrorEnum.USER_FALSEPASSWORD.getErrorMsg());
+                throw new ServiceException(UserErrorEnum.USER_FALSEPASSWORD.getErrorCode(), UserErrorEnum.USER_FALSEPASSWORD.getErrorMsg());
             } catch (Exception e) {
                 log.error("登录异常，{}", e.getMessage(), e);
-                rb = ResponseUtil.defaultFailResponse();
+                throw new ServiceException();
             }
         }
         return rb;
@@ -54,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseBean logout() {
         Subject subject = SecurityUtils.getSubject();
         if (subject.isAuthenticated() == false) {
-            return ResponseUtil.failResponse(CommonConstant.UNAUTH_CODE, CommonConstant.UNAUTH_MSG);
+            throw new ServiceException(CommonConstant.UNAUTH_CODE, CommonConstant.UNAUTH_CODE);
         } else {
             subject.logout();
             return ResponseUtil.successResponse(null);

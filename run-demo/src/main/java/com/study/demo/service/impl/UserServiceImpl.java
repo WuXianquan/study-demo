@@ -3,12 +3,15 @@ package com.study.demo.service.impl;
 import com.study.demo.bean.Permission;
 import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
+import com.study.demo.enums.UserErrorEnum;
+import com.study.demo.exception.ServiceException;
 import com.study.demo.mapper.UserMapper;
 import com.study.demo.service.PermissionService;
 import com.study.demo.service.RoleService;
 import com.study.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,16 +40,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserById(Long id) {
-        return userMapper.findUserById(id);
+        User user = userMapper.findUserById(id);
+        if (user == null) {
+            throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
+        }
+        return user;
     }
 
     @Override
     public User findUserByUsername(String username) {
-        return userMapper.findUserByUsername(username);
+        User user = userMapper.findUserByUsername(username);
+        if (user == null) {
+            throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
+        }
+        return user;
     }
 
     @Override
     public Integer createUser(User user) {
+        User u = this.findUserByUsername(user.getUsername());
+        if (u != null) {
+            throw new ServiceException(UserErrorEnum.USER_USERNAMEUSED.getErrorCode(), UserErrorEnum.USER_USERNAMEUSED.getErrorMsg());
+        }
         return userMapper.createUser(user);
     }
 

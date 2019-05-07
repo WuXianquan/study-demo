@@ -28,9 +28,6 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PermissionService permissionService;
-
     /**
      * 用于获取登录成功后的角色、权限等信息
      *
@@ -42,8 +39,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         User user = (User) principalCollection.getPrimaryPrincipal();
         if (user != null) {
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            // TODO
-
             List<Role> roleList = userService.findUserRoleByUsername(user.getUsername());
             Set<String> roleStringSet = new HashSet<String>();
             for (Role role : roleList) {
@@ -51,13 +46,8 @@ public class MyShiroRealm extends AuthorizingRealm {
             }
             info.setRoles(roleStringSet);
 
-
             Set<String> permissionUrlSet = userService.findUserStringPermissionByUsername(user.getUsername());
             info.setStringPermissions(permissionUrlSet);
-
-            //Set<Permission> permissionSet = userService.findUserPermissionByUsername(user.getUsername());
-            //info.setObjectPermissions(permissionSet);
-            // TODO 了解权限访问限制的流程和使用规范
             return info;
         }
         return null;

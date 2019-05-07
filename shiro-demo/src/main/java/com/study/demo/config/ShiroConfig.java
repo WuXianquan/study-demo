@@ -62,7 +62,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/unauth", "anon");
         filterChainDefinitionMap.put("/user/auth/login", "anon");
         filterChainDefinitionMap.put("/register", "anon");
-        filterChainDefinitionMap.put("/user/info", "authc");
+        filterChainDefinitionMap.put("/user/noAuth", "anon");
         filterChainDefinitionMap.put("/logout", "logout");
         //过滤连接自定义，从上往下顺序执行，所以用LinkHashMap /**放在最下边
         filterChainDefinitionMap.put("/**", "authc");
@@ -70,10 +70,6 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl("/user/unauth");
         //设置登录成功后要跳转的连接
         shiroFilterFactoryBean.setSuccessUrl("/user/index");
-        //设置登录未成功，也可以说无权限界面
-        // TODO BUG: 设置无权访问页面跳转不起作用
-        shiroFilterFactoryBean.setUnauthorizedUrl("/user/noAuth");
-
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

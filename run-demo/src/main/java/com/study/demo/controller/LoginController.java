@@ -30,16 +30,6 @@ public class LoginController {
         return "/user/login";
     }
 
-    @GetMapping("/error")
-    public String error() {
-        return "/error";
-    }
-
-    @GetMapping("/noAuth")
-    public String noAuth() {
-        return "/noAuth";
-    }
-
     @PostMapping("/auth/login")
     @ResponseBody
     public ResponseBean login(@RequestParam("username") String username, @RequestParam("password") String password) {
@@ -58,5 +48,4 @@ public class LoginController {
         request.setAttribute("username", user.getUsername());
         return "/user/index";
     }
-
 }

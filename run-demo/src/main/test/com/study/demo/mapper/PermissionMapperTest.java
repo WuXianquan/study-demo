@@ -40,7 +40,7 @@ public class PermissionMapperTest {
         Permission permission = new Permission();
         permission.setId("2222");
         permission.setName("根据用户ID查看用户信息");
-        permission.setUrl("user::findUserById");
+        permission.setUrl("user:findUserById");
         Integer ret = permissionMapper.createPermission(permission);
         Assert.assertEquals(ret, Integer.valueOf(1));
     }
@@ -50,7 +50,7 @@ public class PermissionMapperTest {
         Permission permission = new Permission();
         permission.setId("1111");
         permission.setName("查看所有用户信息");
-        permission.setUrl("user::findUserList");
+        permission.setUrl("user:findUserList");
         Integer ret = permissionMapper.updatePermission(permission);
         Assert.assertEquals(ret, Integer.valueOf(1));
     }

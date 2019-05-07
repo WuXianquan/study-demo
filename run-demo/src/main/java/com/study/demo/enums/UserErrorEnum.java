@@ -12,7 +12,8 @@ public enum UserErrorEnum {
 
     USER_NOTEXITS("401", "用户不存在"),
     USER_FALSEPASSWORD("402", "账号与密码不匹配"),
-    USER_HASLOGINED("403", "账号已登录");
+    USER_HASLOGINED("403", "账号已登录"),
+    USER_USERNAMEUSED("404", "用户名已被占用");
 
     private String errorCode;
 

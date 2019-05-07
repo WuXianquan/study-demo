@@ -1,5 +1,6 @@
 package com.study.demo.exception;
 
+import com.study.demo.constant.CommonConstant;
 import lombok.Data;
 
 /**
@@ -16,10 +17,7 @@ public class BaseException extends RuntimeException {
 
     public BaseException() {
         super();
-    }
-
-    public BaseException(String msg) {
-        super(msg);
+        this.msg = CommonConstant.FAIL_MSG;
     }
 
     public BaseException(String code, String msg) {
