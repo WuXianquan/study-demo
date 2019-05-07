@@ -34,4 +34,15 @@
     <update id="deleteUser" parameterType="java.lang.Long">
         update t_user set is_del = -1 where id = #{id}
     </update>
+
+    <insert id="createUserRoles" parameterType="java.util.List">
+         insert into t_user_role (user_id,role_id) values
+         <foreach collection="list" item="item" index="index" separator=",">
+             (#{item.userId}, #{item.roleId})
+         </foreach>
+    </insert>
+
+    <update id="deleteUserRoles" parameterType="java.lang.Long">
+        delete from t_user_role where user_id = #{value}
+    </update>
 </mapper>

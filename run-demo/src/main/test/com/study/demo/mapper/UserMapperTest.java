@@ -7,7 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: Lon
@@ -62,5 +66,26 @@ public class UserMapperTest {
     public void deleteUser() {
         Integer ret = userMapper.deleteUser(Long.valueOf(1));
         Assert.assertEquals(ret, Integer.valueOf(1));
+    }
+
+    @Test
+    public void createUserRoles() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("userId", 1);
+        map1.put("roleId", "111");
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("userId", 1);
+        map2.put("roleId", "222");
+        list.add(map1);
+        list.add(map2);
+        Integer ret = userMapper.createUserRoles(list);
+        Assert.assertNotSame(ret, 0);
+    }
+
+    @Test
+    public void deleteUserRoles() {
+        Integer ret = userMapper.deleteUserRoles(Long.valueOf(1));
+        Assert.assertNotSame(ret, 0);
     }
 }

@@ -10,6 +10,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -44,12 +45,16 @@ public class UserController {
     @PostMapping("create")
     @ApiOperation(value = "新建用户")
     @RequiresPermissions("user:create")
-    // TODO 配置映射实体类User为接口参数
-    public ResponseBean create(@RequestParam User user) {
-        Integer ret = userService.createUser(user);
-        if (ret != 1) {
-            ResponseUtil.failResponse("创建用户失败");
-        }
+    public ResponseBean create(@Valid @RequestBody User user) {
+        userService.createUser(user);
+        return ResponseUtil.successResponse(user);
+    }
+
+    @PostMapping("update")
+    @ApiOperation(value = "修改用户")
+    @RequiresPermissions("user:update")
+    public ResponseBean update(@Valid @RequestBody User user) {
+        userService.updateUser(user);
         return ResponseUtil.successResponse(user);
     }
 }

@@ -1,5 +1,6 @@
 package com.study.demo.mapper;
 
+import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
 import java.util.List;
 
@@ -50,4 +51,18 @@ public interface UserMapper {
      * @return
      */
     Integer deleteUser(Long id);
+
+    /**
+     * 添加用户角色
+     * @param list
+     * @return
+     */
+    Integer createUserRoles(List list);
+
+    /**
+     * 删除用户角色
+     * @param userId 用户ID
+     * @return
+     */
+    Integer deleteUserRoles(Long userId);
 }

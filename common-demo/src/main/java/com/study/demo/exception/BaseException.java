@@ -20,6 +20,11 @@ public class BaseException extends RuntimeException {
         this.msg = CommonConstant.FAIL_MSG;
     }
 
+    public BaseException(String msg) {
+        this.code = CommonConstant.FAIL_CODE;
+        this.msg = msg;
+    }
+
     public BaseException(String code, String msg) {
         this.code = code;
         this.msg = msg;

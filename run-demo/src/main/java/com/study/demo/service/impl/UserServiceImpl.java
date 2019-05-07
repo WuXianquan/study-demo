@@ -9,12 +9,12 @@ import com.study.demo.mapper.UserMapper;
 import com.study.demo.service.PermissionService;
 import com.study.demo.service.RoleService;
 import com.study.demo.service.UserService;
+import com.study.demo.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: Lon
@@ -41,18 +41,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(Long id) {
         User user = userMapper.findUserById(id);
-        if (user == null) {
-            throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
-        }
         return user;
     }
 
     @Override
     public User findUserByUsername(String username) {
         User user = userMapper.findUserByUsername(username);
-        if (user == null) {
-            throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
-        }
         return user;
     }
 
@@ -62,12 +56,46 @@ public class UserServiceImpl implements UserService {
         if (u != null) {
             throw new ServiceException(UserErrorEnum.USER_USERNAMEUSED.getErrorCode(), UserErrorEnum.USER_USERNAMEUSED.getErrorMsg());
         }
-        return userMapper.createUser(user);
+        int ret = userMapper.createUser(user);
+        if (ret != 1) {
+            throw new ServiceException("新增失败");
+        }
+        // TODO 修改角色及权限信息 事务
+        return ret;
     }
 
+    @Transactional
     @Override
     public Integer updateUser(User user) {
-        return userMapper.updateUser(user);
+        Long userId = user.getId();
+        User u = this.findUserById(userId);
+        if (u == null) {
+            throw new ServiceException(UserErrorEnum.USER_NOTEXITS.getErrorCode(), UserErrorEnum.USER_NOTEXITS.getErrorMsg());
+        }
+        int ret = userMapper.updateUser(user);
+        if (ret != 1) {
+            throw new ServiceException("修改失败");
+        }
+        // TODO 修改角色及权限信息 事务
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            Role r = roleService.findRoleById(role.getId());
+            if (r == null) {
+                throw new ServiceException("角色不存在");
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("roleId", role.getId());
+            list.add(map);
+        }
+
+        if (list.size() == 0){
+            throw new ServiceException("至少选择一个角色");
+        }
+        userMapper.deleteUserRoles(userId);
+        userMapper.createUserRoles(list);
+        return ret;
     }
 
     @Override
