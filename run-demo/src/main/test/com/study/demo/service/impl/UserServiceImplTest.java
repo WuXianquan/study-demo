@@ -3,19 +3,17 @@ package com.study.demo.service.impl;
 import com.study.demo.bean.Permission;
 import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
-import com.study.demo.mapper.UserMapper;
 import com.study.demo.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
-
-import static org.junit.Assert.*;
 
 /**
  * @Author: Lon
@@ -52,7 +50,13 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void updateUser() {
+        User user = new User();
+        user.setId(Long.valueOf(1));
+        user.setUsername("TEST");
+        userService.updateUser(user);
     }
 
     @Test

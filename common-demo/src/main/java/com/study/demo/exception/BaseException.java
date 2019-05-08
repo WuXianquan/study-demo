@@ -13,20 +13,20 @@ public class BaseException extends RuntimeException {
 
     protected String code;
 
-    protected String msg;
+    protected String message;
 
     public BaseException() {
         super();
-        this.msg = CommonConstant.FAIL_MSG;
+        this.message = CommonConstant.FAIL_MSG;
     }
 
-    public BaseException(String msg) {
+    public BaseException(String message) {
         this.code = CommonConstant.FAIL_CODE;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public BaseException(String code, String msg) {
+    public BaseException(String code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 }

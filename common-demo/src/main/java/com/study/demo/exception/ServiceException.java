@@ -11,16 +11,16 @@ public class ServiceException extends BaseException {
 
     public ServiceException() {
         this.code = CommonConstant.FAIL_CODE;
-        this.msg = CommonConstant.FAIL_MSG;
+        this.message = CommonConstant.FAIL_MSG;
     }
 
     public ServiceException(String msg) {
         this.code = CommonConstant.FAIL_CODE;
-        this.msg = msg;
+        this.message = msg;
     }
 
     public ServiceException(String code, String msg) {
         super.code = code;
-        super.msg = msg;
+        super.message = msg;
     }
 }

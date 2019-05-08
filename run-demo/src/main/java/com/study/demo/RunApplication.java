@@ -6,8 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableCaching
+@EnableTransactionManagement
 @SpringBootApplication(scanBasePackages="com.study.demo")
 @MapperScan(basePackages = "com.study.demo.mapper")
 public class RunApplication extends SpringBootServletInitializer {

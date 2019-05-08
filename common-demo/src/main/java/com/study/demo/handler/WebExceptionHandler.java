@@ -29,7 +29,7 @@ public class WebExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseBean handleServiceException(HttpServletRequest request, ServiceException se) {
         log.error("请求{}异常:{}", request.getServletPath(), se.getMessage(), se);
-        return ResponseUtil.failResponse(se.getCode(), se.getMsg());
+        return ResponseUtil.failResponse(se.getCode(), se.getMessage());
     }
 
     @ExceptionHandler(UnauthorizedException.class)

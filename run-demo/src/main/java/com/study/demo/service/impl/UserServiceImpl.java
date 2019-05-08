@@ -9,11 +9,9 @@ import com.study.demo.mapper.UserMapper;
 import com.study.demo.service.PermissionService;
 import com.study.demo.service.RoleService;
 import com.study.demo.service.UserService;
-import com.study.demo.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 /**
@@ -22,6 +20,7 @@ import java.util.*;
  * @Description: 基础用户实现类
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService {
         return ret;
     }
 
-    @Transactional
     @Override
     public Integer updateUser(User user) {
         Long userId = user.getId();
@@ -90,9 +88,6 @@ public class UserServiceImpl implements UserService {
             list.add(map);
         }
 
-        if (list.size() == 0){
-            throw new ServiceException("至少选择一个角色");
-        }
         userMapper.deleteUserRoles(userId);
         userMapper.createUserRoles(list);
         return ret;
