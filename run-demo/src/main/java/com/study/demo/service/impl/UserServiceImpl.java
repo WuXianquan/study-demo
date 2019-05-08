@@ -20,7 +20,6 @@ import java.util.*;
  * @Description: 基础用户实现类
  */
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -63,6 +62,7 @@ public class UserServiceImpl implements UserService {
         return ret;
     }
 
+    @Transactional
     @Override
     public Integer updateUser(User user) {
         Long userId = user.getId();
@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
         if (ret != 1) {
             throw new ServiceException("修改失败");
         }
-        // TODO 修改角色及权限信息 事务
         List<Map<String, Object>> list = new ArrayList<>();
         List<Role> roles = user.getRoles();
         for (Role role : roles) {
@@ -87,7 +86,6 @@ public class UserServiceImpl implements UserService {
             map.put("roleId", role.getId());
             list.add(map);
         }
-
         userMapper.deleteUserRoles(userId);
         userMapper.createUserRoles(list);
         return ret;

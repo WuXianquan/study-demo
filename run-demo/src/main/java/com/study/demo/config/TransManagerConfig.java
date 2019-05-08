@@ -1,12 +1,11 @@
 package com.study.demo.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -15,12 +14,16 @@ import javax.sql.DataSource;
  * @Description: 事务管理配置类
  */
 @Configuration
-@EnableTransactionManagement
-public class TransManagerConfig {
+public class TransManagerConfig implements TransactionManagementConfigurer {
 
+    @Resource(name = "druidDataSource")
+    private DataSource dataSource;
+
+    @Override
     @Bean
-    public PlatformTransactionManager annotationDrivenTransactionManager(@Qualifier("druidDataSource") DataSource dataSource) {
-        DataSourceTransactionManager dataSourceTransactionManager =  new DataSourceTransactionManager(dataSource);
-        return dataSourceTransactionManager;
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        DataSourceTransactionManager transactionManager =  new DataSourceTransactionManager();
+        transactionManager.setDataSource(dataSource);
+        return transactionManager;
     }
 }

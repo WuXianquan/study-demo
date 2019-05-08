@@ -1,9 +1,7 @@
 package com.study.demo.realm;
 
-import com.study.demo.bean.Permission;
 import com.study.demo.bean.Role;
 import com.study.demo.bean.User;
-import com.study.demo.service.PermissionService;
 import com.study.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.*;
@@ -12,7 +10,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.context.annotation.Lazy;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +23,7 @@ import java.util.Set;
 @Slf4j
 public class MyShiroRealm extends AuthorizingRealm {
 
+    @Lazy
     @Autowired
     private UserService userService;
 
