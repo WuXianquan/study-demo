@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +49,15 @@ public class UserServiceImplTest {
 
     @Test
     public void createUser() {
+        User user = new User();
+        user.setUsername("k");
+        user.setPassword("1");
+        List<Role> roles = new ArrayList<>();
+        Role role = new Role();
+        role.setId("222");
+        roles.add(role);
+        user.setRoles(roles);
+        Assert.assertSame(userService.createUser(user), 1);
     }
 
     @Test
@@ -56,7 +67,7 @@ public class UserServiceImplTest {
         User user = new User();
         user.setId(Long.valueOf(1));
         user.setUsername("TEST");
-        userService.updateUser(user);
+        Assert.assertSame(userService.updateUser(user), 1);
     }
 
     @Test

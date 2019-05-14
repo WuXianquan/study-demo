@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Transactional
     @Override
     public Integer createUser(User user) {
         User u = this.findUserByUsername(user.getUsername());
@@ -58,7 +59,20 @@ public class UserServiceImpl implements UserService {
         if (ret != 1) {
             throw new ServiceException("新增失败");
         }
-        // TODO 修改角色及权限信息 事务
+
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            Role r = roleService.findRoleById(role.getId());
+            if (r == null) {
+                throw new ServiceException("角色不存在");
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", user.getId());
+            map.put("roleId", role.getId());
+            list.add(map);
+        }
+        userMapper.createUserRoles(list);
         return ret;
     }
 

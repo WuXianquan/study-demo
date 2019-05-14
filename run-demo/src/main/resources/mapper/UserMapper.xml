@@ -23,7 +23,7 @@
         select * from t_user where username = #{value}
     </select>
 
-    <insert id="createUser" parameterType="com.study.demo.bean.User">
+    <insert id="createUser" parameterType="com.study.demo.bean.User" keyProperty="id" useGeneratedKeys="true">
         insert into t_user (username,password,create_time) values (#{username}, #{password}, now());
     </insert>
 
