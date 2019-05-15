@@ -44,6 +44,11 @@
             <artifactId>mongodb-demo</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.study.demo</groupId>
+            <artifactId>hbase-demo</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
