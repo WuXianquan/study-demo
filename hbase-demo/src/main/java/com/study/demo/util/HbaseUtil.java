@@ -45,11 +45,10 @@ public class HbaseUtil {
         }
         hBaseAdmin.createTable(desc);
         hBaseAdmin.close();
-
     }
 
-    public void insert(String tableName, String familyName, String rowName, String qualifter, String value) {
-        hbaseTemplate.put(tableName, familyName, rowName, qualifter, value.getBytes());
+    public void insert(String tableName, String rowName, String familyName, String qualifter, String value) {
+        hbaseTemplate.put(tableName, rowName, familyName, qualifter, value.getBytes());
     }
 
     public void delete(String tableName, String rowName, String familyName) {

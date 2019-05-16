@@ -35,6 +35,7 @@ public class HbaseUtilTest {
 
     @Test
     public void insert() {
+        hbaseUtil.insert(TABLENAME, "testRowName", "testFamilyName", "testQualifter", "testValue");
     }
 
     @Test
