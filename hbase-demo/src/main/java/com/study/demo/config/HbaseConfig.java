@@ -3,7 +3,6 @@ package com.study.demo.config;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -27,7 +26,10 @@ public class HbaseConfig {
     @Bean
     public HbaseTemplate hbaseTemplate() {
         HbaseTemplate hbaseTemplate = new HbaseTemplate();
-        hbaseTemplate.setConfiguration(configuration());
+        org.apache.hadoop.conf.Configuration configuration = HBaseConfiguration.create();
+        configuration.set("hbase.zookeeper.quorum", quorum);
+        configuration.set("hbase.zookeeper.port", port);
+        hbaseTemplate.setConfiguration(configuration);
         hbaseTemplate.setAutoFlush(true);
         return hbaseTemplate;
     }
@@ -35,12 +37,5 @@ public class HbaseConfig {
     @Bean
     public HBaseAdmin hbaseAdmin() throws IOException {
         return new HBaseAdmin(hbaseTemplate().getConfiguration());
-    }
-
-    private org.apache.hadoop.conf.Configuration configuration() {
-        org.apache.hadoop.conf.Configuration configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", quorum);
-        configuration.set("hbase.zookeeper.port", port);
-        return configuration;
     }
 }

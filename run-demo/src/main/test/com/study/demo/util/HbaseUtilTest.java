@@ -1,5 +1,8 @@
 package com.study.demo.util;
 
+import com.study.demo.RowMapper.UserRowMapper;
+import com.study.demo.bean.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author: Lon
@@ -35,7 +39,19 @@ public class HbaseUtilTest {
 
     @Test
     public void insert() {
-        hbaseUtil.insert(TABLENAME, "testRowName", "testFamilyName", "testQualifter", "testValue");
+        hbaseUtil.insert("user", "0001", "info", "password", "123");
+    }
+
+    @Test
+    public void find() {
+        User user = hbaseUtil.find("user", "0002", new UserRowMapper());
+        Assert.assertNotNull(user);
+    }
+
+    @Test
+    public void find1() {
+        List<String> list = hbaseUtil.find("user", "info", "username");
+        Assert.assertNotSame(0, list.size());
     }
 
     @Test
