@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 public class HbaseUtilTest {
 
-    private final static String TABLENAME = "testTableName";
+    private final static String TABLENAME = "user";
 
     @Autowired
     private HbaseUtil hbaseUtil;
@@ -39,27 +38,35 @@ public class HbaseUtilTest {
 
     @Test
     public void insert() {
-        hbaseUtil.insert("user", "0001", "info", "password", "123");
+        hbaseUtil.insert(TABLENAME, "0003", "info", "username", "test111");
     }
 
     @Test
     public void find() {
-        User user = hbaseUtil.find("user", "0002", new UserRowMapper());
+        User user = hbaseUtil.find(TABLENAME, "0001", new UserRowMapper());
         Assert.assertNotNull(user);
     }
 
     @Test
     public void find1() {
-        List<String> list = hbaseUtil.find("user", "info", "username");
+        List<String> list = hbaseUtil.find(TABLENAME, "info", "username");
         Assert.assertNotSame(0, list.size());
     }
 
     @Test
+    public void find2() {
+        String string = hbaseUtil.find(TABLENAME, "0001", "info", "username");
+        Assert.assertNotNull(string);
+    }
+
+    @Test
     public void delete() {
+        hbaseUtil.delete(TABLENAME, "0001", "tttt");
     }
 
     @Test
     public void delete1() {
+        hbaseUtil.delete(TABLENAME, "0003", "info", "username");
     }
 
     @Test

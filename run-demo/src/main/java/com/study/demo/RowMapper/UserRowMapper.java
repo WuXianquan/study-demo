@@ -13,13 +13,19 @@ import org.springframework.data.hadoop.hbase.RowMapper;
 public class  UserRowMapper implements RowMapper<User> {
 
     private static byte[] COLUMN_FAMILY = "info".getBytes();
+    private static byte[] ID = "id".getBytes();
     private static byte[] USERNAME = "username".getBytes();
+    private static byte[] PASSWORD = "password".getBytes();
 
     @Override
-    public User mapRow(Result result, int rowNumi) {
+    public User mapRow(Result result, int rowNum) {
+        String id = Bytes.toString(result.getValue(COLUMN_FAMILY, ID));
         String username = Bytes.toString(result.getValue(COLUMN_FAMILY, USERNAME));
+        String password = Bytes.toString(result.getValue(COLUMN_FAMILY, PASSWORD));
         User user = new User();
+        user.setId(Long.valueOf(id));
         user.setUsername(username);
+        user.setPassword(password);
         return user;
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 import org.springframework.data.hadoop.hbase.RowMapper;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -75,6 +74,10 @@ public class HbaseUtil {
     }
 
     public List<String> find(String tableName, String familyName, String qualifter) {
-        return hbaseTemplate.find(tableName, familyName, qualifter, (result, i) -> result.toString());
+        return hbaseTemplate.find(tableName, familyName, qualifter, (result, i) -> Bytes.toString(result.getValue(familyName.getBytes(), qualifter.getBytes())));
+    }
+
+    public String find(String tableName, String rowName, String familyName, String qualifter) {
+        return hbaseTemplate.get(tableName, rowName, familyName, qualifter, (result, i) -> Bytes.toString(result.getValue(familyName.getBytes(), qualifter.getBytes())));
     }
 }
