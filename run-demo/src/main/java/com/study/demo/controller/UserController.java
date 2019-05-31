@@ -3,14 +3,19 @@ package com.study.demo.controller;
 import com.study.demo.bean.User;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.UserService;
+import com.study.demo.util.FileUtil;
 import com.study.demo.util.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -22,6 +27,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Value("${file.path}")
+    private String path;
 
     @Autowired
     private UserService userService;
@@ -56,5 +64,25 @@ public class UserController {
     public ResponseBean update(@Valid @RequestBody User user) {
         userService.updateUser(user);
         return ResponseUtil.successResponse(user);
+    }
+
+    @PostMapping("fileUpload/userHead")
+    public ResponseBean fileUpload(@RequestParam(value = "userHead") MultipartFile file) throws IOException {
+        if (!file.isEmpty()) {
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            String fileName = path + user.getUsername() + "_userHead.jpg";
+            FileUtil.upload(file , fileName);
+            return ResponseUtil.defaultSuccessResponse();
+        }
+        return ResponseUtil.defaultFailResponse();
+    }
+
+    @PostMapping("fileUpload/userPics")
+    public ResponseBean filesUpload(@RequestParam(value = "userPics") MultipartFile[] files) throws IOException {
+        if (files != null && files.length > 0) {
+            FileUtil.uploads(files , path);
+            return ResponseUtil.defaultSuccessResponse();
+        }
+        return ResponseUtil.defaultFailResponse();
     }
 }

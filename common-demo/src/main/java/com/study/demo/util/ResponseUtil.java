@@ -19,6 +19,17 @@ public class ResponseUtil {
     }
 
     /**
+     * 默认请求成功响应体
+     * @return
+     */
+    public static ResponseBean defaultSuccessResponse() {
+        ResponseBean responseBean = new ResponseBean();
+        responseBean.setCode(CommonConstant.SUCCESS_CODE);
+        responseBean.setMsg(CommonConstant.SUCCESS_MSG);
+        return responseBean;
+    }
+
+    /**
      * 默认请求失败响应体
      * @return
      */

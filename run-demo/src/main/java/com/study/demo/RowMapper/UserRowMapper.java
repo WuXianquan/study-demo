@@ -5,6 +5,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.data.hadoop.hbase.RowMapper;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * @Author: Lon
  * @Date: 2019/5/20 17:29
@@ -12,10 +14,23 @@ import org.springframework.data.hadoop.hbase.RowMapper;
  */
 public class  UserRowMapper implements RowMapper<User> {
 
-    private static byte[] COLUMN_FAMILY = "info".getBytes();
-    private static byte[] ID = "id".getBytes();
-    private static byte[] USERNAME = "username".getBytes();
-    private static byte[] PASSWORD = "password".getBytes();
+    private static byte[] COLUMN_FAMILY;
+    private static byte[] ID;
+    private static byte[] USERNAME;
+    private static byte[] PASSWORD;
+
+    static {
+        try {
+            COLUMN_FAMILY = "info".getBytes("UTF-8");
+            ID = "id".getBytes("UTF-8");
+            USERNAME = "username".getBytes("UTF-8");
+            PASSWORD = "password".getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public User mapRow(Result result, int rowNum) {
