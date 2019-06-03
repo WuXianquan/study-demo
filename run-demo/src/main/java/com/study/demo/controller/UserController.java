@@ -67,20 +67,32 @@ public class UserController {
     }
 
     @PostMapping("fileUpload/userHead")
-    public ResponseBean fileUpload(@RequestParam(value = "userHead") MultipartFile file) throws IOException {
+    public ResponseBean fileUpload(@RequestParam(value = "userHead") MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
+            boolean isImage = FileUtil.isImage(FileUtil.multipartFileToFile(file));
+            if (!isImage) {
+                return ResponseUtil.failResponse("只能上传图片");
+            }
             User user = (User) SecurityUtils.getSubject().getPrincipal();
-            String fileName = path + user.getUsername() + "_userHead.jpg";
-            FileUtil.upload(file , fileName);
+            String fileName = path + File.separator + "userHead" + File.separator + user.getId() + ".jpg";
+            FileUtil.upload(file, fileName);
             return ResponseUtil.defaultSuccessResponse();
         }
         return ResponseUtil.defaultFailResponse();
     }
 
     @PostMapping("fileUpload/userPics")
-    public ResponseBean filesUpload(@RequestParam(value = "userPics") MultipartFile[] files) throws IOException {
+    public ResponseBean filesUpload(@RequestParam(value = "userPics") MultipartFile[] files) throws Exception {
         if (files != null && files.length > 0) {
-            FileUtil.uploads(files , path);
+            for (MultipartFile file : files) {
+                boolean isImage = FileUtil.isImage(FileUtil.multipartFileToFile(file));
+                if (!isImage) {
+                    return ResponseUtil.failResponse("只能上传图片");
+                }
+            }
+            User user = (User) SecurityUtils.getSubject().getPrincipal();
+            String fileName = path + File.separator + "userPics" + File.separator + user.getId() + ".jpg";
+            FileUtil.uploads(files, fileName);
             return ResponseUtil.defaultSuccessResponse();
         }
         return ResponseUtil.defaultFailResponse();

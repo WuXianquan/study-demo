@@ -3,6 +3,7 @@ package com.study.demo.controller;
 import com.study.demo.bean.User;
 import com.study.demo.result.ResponseBean;
 import com.study.demo.service.LoginService;
+import com.study.demo.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/unauth")
     public String unauth() {
@@ -46,6 +50,7 @@ public class LoginController {
     public String index(HttpServletRequest request) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         request.setAttribute("username", user.getUsername());
+        request.setAttribute("head", userService.findUserHeadByUserId(user.getId()));
         return "/user/index";
     }
 }

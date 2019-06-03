@@ -72,4 +72,11 @@ public interface UserService {
      * @param username
      */
     Set<String> findUserStringPermissionByUsername(String username);
+
+    /**
+     * 根据用户Id获取头像地址
+     * @param userId
+     * @return
+     */
+    String findUserHeadByUserId(Long userId);
 }

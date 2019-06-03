@@ -10,8 +10,11 @@ import com.study.demo.service.PermissionService;
 import com.study.demo.service.RoleService;
 import com.study.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.File;
 import java.util.*;
 
 /**
@@ -21,6 +24,9 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${file.path}")
+    private String filePath;
 
     @Autowired
     private UserMapper userMapper;
@@ -139,5 +145,10 @@ public class UserServiceImpl implements UserService {
             }
         }
         return permissionSet;
+    }
+
+    @Override
+    public String findUserHeadByUserId(Long userId) {
+        return File.separator + "userHead" + File.separator + userId + ".jpg";
     }
 }

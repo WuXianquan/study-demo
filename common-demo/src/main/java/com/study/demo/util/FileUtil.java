@@ -1,8 +1,10 @@
 package com.study.demo.util;
 
-import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 
 /**
@@ -10,33 +12,45 @@ import java.io.*;
  * @Date: 2019/5/30 17:41
  * @Description: 文件工具类
  */
-@Slf4j
 public class FileUtil {
 
+    /**
+     * 上传文件
+     * @param file 文件
+     * @param path 保存路径
+     * @throws IOException
+     */
     public static void upload(MultipartFile file, String path) throws IOException {
         if (null == file || file.isEmpty()) {
             throw new RuntimeException("file can not be empty");
         }
-        OutputStream os = null;
-        InputStream is = null;
-        int temp;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+        byte[] byt = new byte[20 * 1024];
+        int n;
         try {
-            os = new FileOutputStream(path);
-            is = file.getInputStream();
-            while ((temp = is.read()) != (-1)) {
-                os.write(temp);
+            bis = new BufferedInputStream(file.getInputStream());
+            bos = new BufferedOutputStream(new FileOutputStream(new File(path)));
+            while ((n = bis.read(byt)) != -1) {
+                bos.write(byt, 0, n);
             }
-            os.flush();
+            bos.flush();
         } finally {
-            if (os != null) {
-                os.close();
+            if (bos != null) {
+                bos.close();
             }
-            if (is != null) {
-                is.close();
+            if (bis != null) {
+                bis.close();
             }
         }
     }
 
+    /**
+     * 上传多个文件
+     * @param files 文件数组
+     * @param path  保存路径
+     * @throws IOException
+     */
     public static void uploads(MultipartFile[] files, String path) throws IOException {
         if (null == files || files.length < 1) {
             throw new RuntimeException("files can not be empty");
@@ -62,5 +76,30 @@ public class FileUtil {
                 bis.close();
             }
         }
+    }
+
+    /**
+     * 是否为图片
+     * @param file 文件
+     * @return
+     * @throws IOException
+     */
+    public static boolean isImage(File file) throws IOException {
+        Image image = ImageIO.read(file);
+        if (image == null) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * MultipartFile转File
+     * @param multipartFile
+     * @throws Exception
+     */
+    public static File multipartFileToFile(MultipartFile multipartFile) throws Exception {
+        File file = new File(multipartFile.getOriginalFilename());
+        FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);
+        return file;
     }
 }
