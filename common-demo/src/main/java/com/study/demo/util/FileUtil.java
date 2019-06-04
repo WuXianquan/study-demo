@@ -2,7 +2,6 @@ package com.study.demo.util;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
@@ -51,7 +50,7 @@ public class FileUtil {
      * @param path  保存路径
      * @throws IOException
      */
-    public static void uploads(MultipartFile[] files, String path) throws IOException {
+    public static void uploads(MultipartFile[] files, String[] path) throws IOException {
         if (null == files || files.length < 1) {
             throw new RuntimeException("files can not be empty");
         }
@@ -60,9 +59,9 @@ public class FileUtil {
         byte[] byt = new byte[20 * 1024];
         int n;
         try {
-            for (MultipartFile file : files) {
-                bis = new BufferedInputStream(file.getInputStream());
-                bos = new BufferedOutputStream(new FileOutputStream(new File(path)));
+            for (int i = 0; i < files.length; i++) {
+                bis = new BufferedInputStream(files[i].getInputStream());
+                bos = new BufferedOutputStream(new FileOutputStream(new File(path[i])));
                 while ((n = bis.read(byt)) != -1) {
                     bos.write(byt, 0, n);
                 }
@@ -89,6 +88,22 @@ public class FileUtil {
         if (image == null) {
             return false;
         }
+        return true;
+    }
+
+    /**
+     * 是否为图片
+     * @param multipartFile 文件
+     * @return
+     * @throws IOException
+     */
+    public static boolean isImage(MultipartFile multipartFile) throws Exception {
+        File file = multipartFileToFile(multipartFile);
+        Image image = ImageIO.read(file);
+        if (image == null) {
+            return false;
+        }
+        file.delete();// 删除复制保存在项目下的文件
         return true;
     }
 

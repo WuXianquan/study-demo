@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.Valid;
 import java.io.*;
 import java.util.List;
@@ -69,7 +68,7 @@ public class UserController {
     @PostMapping("fileUpload/userHead")
     public ResponseBean fileUpload(@RequestParam(value = "userHead") MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
-            boolean isImage = FileUtil.isImage(FileUtil.multipartFileToFile(file));
+            boolean isImage = FileUtil.isImage(file);
             if (!isImage) {
                 return ResponseUtil.failResponse("只能上传图片");
             }
@@ -84,15 +83,16 @@ public class UserController {
     @PostMapping("fileUpload/userPics")
     public ResponseBean filesUpload(@RequestParam(value = "userPics") MultipartFile[] files) throws Exception {
         if (files != null && files.length > 0) {
-            for (MultipartFile file : files) {
-                boolean isImage = FileUtil.isImage(FileUtil.multipartFileToFile(file));
+            String filePaths[] = new String[files.length];
+            for (int i = 0; i < files.length; i++) {
+                boolean isImage = FileUtil.isImage(FileUtil.multipartFileToFile(files[i]));
                 if (!isImage) {
                     return ResponseUtil.failResponse("只能上传图片");
                 }
+                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                filePaths[i] = path + File.separator + "userPics" + File.separator + user.getId() + "_" + files[i].getOriginalFilename();
             }
-            User user = (User) SecurityUtils.getSubject().getPrincipal();
-            String fileName = path + File.separator + "userPics" + File.separator + user.getId() + ".jpg";
-            FileUtil.uploads(files, fileName);
+            FileUtil.uploads(files, filePaths);
             return ResponseUtil.defaultSuccessResponse();
         }
         return ResponseUtil.defaultFailResponse();
